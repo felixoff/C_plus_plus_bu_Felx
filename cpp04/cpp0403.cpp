@@ -1,4 +1,5 @@
 #include<iostream>
+class AMateria;
 
 class ICharacter
 {
@@ -117,17 +118,11 @@ void Ice::use(ICharacter& target)
     AMateria::use(target);
 }
 
-AMateria *AMateria::clone() const
-{
-    AMateria *mater = new Ice();
-    return (mater);
-}
-
 class Cure:public AMateria
 {
 public:
 Cure();
-Cure(Ice const &other);
+Cure(Cure const &other);
 Cure &operator =(Cure const &other);
 virtual ~Cure();
 virtual AMateria* clone() const;
@@ -155,13 +150,18 @@ Cure::~Cure()
 
 void Cure::use(ICharacter& target)
 {
-    std::cout <<"* heals NAME’s wounds *"<< target.getName() <<" *" <<std::endl;
+    std::cout <<"* heals NAME's wounds *"<< target.getName() <<" *" <<std::endl;
     AMateria::use(target);
 }
 
-AMateria *AMateria::clone() const
+AMateria *Ice::clone() const
 {
     AMateria *mater = new Cure();
+    return (mater);
+}
+AMateria *Cure::clone() const
+{
+    AMateria *mater = new Ice();
     return (mater);
 }
 
@@ -219,7 +219,7 @@ void Character::unequip(int idx)
 
 void Character::use(int idx, ICharacter& target)
 {
-    if (idx < 0 || idx > 0 || this->mater[idx]==NULL )
+    if (idx < 0 || idx > 3 || this->mater[idx]==NULL )
         return;
     this->mater[idx]->use(target);
 }
@@ -240,7 +240,7 @@ class MateriaSource:public IMateriaSource
         MateriaSource();
         virtual ~MateriaSource();
 	    MateriaSource(MateriaSource const &other);
-	    MateriaSource &operator =(const Character &other);
+	    MateriaSource &operator =(const MateriaSource &other);
         void learnMateria(AMateria* m);
         AMateria* createMateria(std::string const & type);
 };
@@ -290,7 +290,7 @@ AMateria* MateriaSource::createMateria(std::string const & type)
     {
         if (this->mater[i]->getType() == type)
         {
-            return this->mater[i];//->clone();
+            return this->mater[i];
         }
     }
     return 0;

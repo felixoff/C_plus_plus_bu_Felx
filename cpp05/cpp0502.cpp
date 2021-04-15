@@ -1,6 +1,6 @@
 #include<iostream>
 #include<fstream>
-
+class Form;
 class Bureaucrat
 {
     private:
@@ -91,6 +91,7 @@ Bureaucrat::Bureaucrat(const Bureaucrat &other):name(other.name),grade(other.gra
 Bureaucrat::~Bureaucrat()
 {
 }
+
 void Bureaucrat::executeForm(Form const & form)
 {
 if (this->getGrade() <=  form.getGradeRun() && form.getIsSign() == false)
@@ -345,9 +346,9 @@ std::string const ShrubberyCreationForm::getTarget() const
 void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
 {
     if (executor.getGrade() > this->grade_run)
-        throw GradeTooLowExceptionToExec()
+        throw GradeTooLowExceptionToExec();
     if (this->is_sign == false)
-        throw FormNotSigned()
+        throw FormNotSigned();
     std::ofstream fout;
     std::string fileName = "<"+this->target+">_shrubbery";
     fout.open(fileName);
@@ -439,16 +440,14 @@ std::string const RobotomyRequestForm::getTarget() const
 void RobotomyRequestForm::execute(Bureaucrat const & executor) const
 {
     if (executor.getGrade() > this->grade_run)
-        throw GradeTooLowExceptionToExec()
+        throw GradeTooLowExceptionToExec();
     if (this->is_sign == false)
-        throw FormNotSigned()
+        throw FormNotSigned();
     std::cout << "DRRRRRRR DRRRRRRRR DRRRRRRR" <<std::endl;
     if (rand() % 100 >= 50)
-        std::cout << "<" << this->target << "> has been robotomized successfully 50% of
-the time" <<std::endl;  
+        std::cout << "<" << this->target << "> has been robotomized successfully 50% of the time" <<std::endl;  
     else
-            std::cout << "<" << this->target << "> has been robotomized failure 50% of
-the time" <<std::endl;  
+            std::cout << "<" << this->target << "> has been robotomized failure 50% of the time" <<std::endl;  
 }
 
 const char *RobotomyRequestForm::FormNotSigned::what() const noexcept
@@ -513,9 +512,9 @@ std::string const PresidentialPardonForm::getTarget() const
 void PresidentialPardonForm::execute(Bureaucrat const & executor) const
 {
     if (executor.getGrade() > this->grade_run)
-        throw GradeTooLowExceptionToExec()
+        throw GradeTooLowExceptionToExec();
     if (this->is_sign == false)
-        throw FormNotSigned()
+        throw FormNotSigned();
     std::cout << "<" << this->target << "> has been pardoned by Zafod Beeblebrox." <<std::endl;  
 }
 
@@ -531,24 +530,27 @@ const char *PresidentialPardonForm::GradeTooLowExceptionToExec::what() const noe
 
 int main(void)
 {
-	srand(time(NULL));
-
-	Bureaucrat supervisor("Supervisor", 1);
+    std::string s0 = "Supervisor";
+	Bureaucrat supervisor(s0, 1);
 	std::cout << supervisor << std::endl;
-	Bureaucrat francis("Francis", 25);
+    std::string s1 = "Francis";
+	Bureaucrat francis(s1, 25);
 	std::cout << francis << std::endl;
 
-	Form *shrub = new ShrubberyCreationForm("home");
+    std::string s2 = "home";
+	Form *shrub = new ShrubberyCreationForm(s2);
 	std::cout << *shrub << std::endl;
 	shrub->beSigned(supervisor);
-	shrub->execute(francis);
+	//shrub->execute(francis);
 
-	Form *pres = new PresidentialPardonForm("Francis");
+    std::string s3 = "Francis";
+	Form *pres = new PresidentialPardonForm(s3);
 	std::cout << *pres << std::endl;
 	supervisor.signForm(*pres);
-	pres->execute(supervisor);
+	//pres->execute(supervisor);
 
-	Form *robot = new RobotomyRequestForm("Bender");
+    std::string s4 = "Bender";
+	Form *robot = new RobotomyRequestForm(s4);
 	std::cout << *robot << std::endl;
 	robot->beSigned(supervisor);
 	robot->execute(francis);
@@ -570,7 +572,8 @@ int main(void)
 
 	try
 	{
-		RobotomyRequestForm robot = RobotomyRequestForm("Bender");
+        std::string s5 = "Bender";
+		RobotomyRequestForm robot = RobotomyRequestForm(s5);
 		std::cout << robot << std::endl;
 		robot.execute(supervisor);
 	}
@@ -583,7 +586,8 @@ int main(void)
 
 	try
 	{
-		PresidentialPardonForm pres = PresidentialPardonForm("Francis");
+        std::string s6 = "Francis";
+		PresidentialPardonForm pres = PresidentialPardonForm(s6);
 		std::cout << pres << std::endl;
 		supervisor.signForm(pres);
 		pres.execute(francis);
@@ -597,7 +601,8 @@ int main(void)
 
 	try
 	{
-		PresidentialPardonForm pres = PresidentialPardonForm("Francis");
+        std::string s7 = "Francis";
+		PresidentialPardonForm pres = PresidentialPardonForm(s7);
 		std::cout << pres << std::endl;
 		supervisor.signForm(pres);
 		francis.executeForm(pres);

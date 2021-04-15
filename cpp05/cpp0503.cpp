@@ -1,6 +1,6 @@
 #include<iostream>
 #include<fstream>
-
+class Form;
 class Bureaucrat
 {
     private:
@@ -571,6 +571,7 @@ Form *Intern::makeForm(std::string name,std::string target)
     else
         throw FormNotExistsException();
     std::cout << "Intern creates <"<< form <<">"<<std::endl;
+    return form;
 }
 
 const char *Intern::FormNotExistsException::what() const noexcept
@@ -583,7 +584,7 @@ int				main(void)
 {
 	Intern					joe;
 
-	joe.makeForm("univers creation", "just here");
+	//joe.makeForm("univers creation", "just here");
 	Form					*form1 = joe.makeForm("shrubbery creation", "mars");
 	Form					*form2 = joe.makeForm("robotomy request", "terre");
 	Form					*form3 = joe.makeForm("presidential pardon", "president");
