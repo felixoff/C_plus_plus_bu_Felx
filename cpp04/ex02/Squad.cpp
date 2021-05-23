@@ -13,7 +13,7 @@ Squad::~Squad()
 		delete this->units[i];
 		i++;
 	}
-	delete[] this->units;
+	delete this->units;
 }
 
 ISpaceMarine *Squad::getUnit(int i) const
@@ -49,7 +49,7 @@ Squad &Squad::operator =(const Squad &other)
 		delete this->units[i];
 		i++;
 	}
-	delete[] this->units;
+	delete this->units;
 	this->units = NULL;
 	this->count = 0;
 	while (i < other.count)
@@ -71,7 +71,7 @@ int Squad::push(ISpaceMarine* unit)
 				return(this->count);
 			i++;
 		}
-		ISpaceMarine **cpy = new ISpaceMarine*[this->count + 2];
+		ISpaceMarine **cpy = new ISpaceMarine*[this->count + 1];
 		i  = 0;
 		while (i < this->count)
 		{
@@ -80,15 +80,13 @@ int Squad::push(ISpaceMarine* unit)
 		}
 		delete[] this->units;
 		this->units = cpy;
-		(this->count)++;
+		this->count++;
 		this->units[this->count - 1] = unit;
-		this->units[this->count] = NULL;
 	}
 	else
 	{
-		this->units = new ISpaceMarine*[2];
+		this->units = new ISpaceMarine*[1];
 		this->units[0] = unit;
-		this->units[1] = NULL;
 		this->count  = 1;
 	}
 	return this->count;

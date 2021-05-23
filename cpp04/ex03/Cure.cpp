@@ -22,7 +22,7 @@ Cure::~Cure()
 
 void Cure::use(ICharacter& target)
 {
-    std::cout <<"* heals "<< target.getName()<<"'s wounds *"<<std::endl;
+    std::cout <<"* heals NAME’s wounds *"<< target.getName() <<" *" <<std::endl;
     AMateria::use(target);
 }
 
